@@ -1,0 +1,70 @@
+*{
+    font-size: 1.5rem;
+}
+body{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+.calculator{
+    display: flex;
+    flex-flow: column;
+    width: 70vw;
+    height: 90vh;
+    border: solid black 1px;
+    align-items: center;
+    gap: 15px;
+    box-sizing: border-box;
+}
+
+.display{
+    display: flex;
+    flex-flow: column;
+    
+    flex-grow: 4;
+    border: solid black 1px;
+    border-radius: 15px;
+    width: 60vw;
+    margin-top: 20px;
+}
+.current-operand{
+    border: solid black 1px;
+    height: 70%;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+.previous-operand{
+    height: 30%;
+    border: solid red 1px;
+    border-top-left-radius:15px;
+    border-top-right-radius: 15px;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 4;
+    justify-content: center;
+    align-content: flex-start;
+    gap: 2px;
+}
+
+.btn{
+    width: 10vw;
+    height: 10vh;
+}
+
+.btn.action{
+    width: 30vw;
+}
+
+.btn.operator{
+    width: 30vw;
+}
+
+.btn.punto{
+    width: 10vw;
+}
