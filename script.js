@@ -153,3 +153,13 @@ function agregarPunto(e){
 puntoDecimal.addEventListener("click", agregarPunto); 
 
 
+//boton de retroceso
+
+let retroceso = document.querySelector(".retroceso"); 
+
+function retroceder(e){
+    currentOperand = currentOperand.slice(0, -1); 
+    updateDisplay(); 
+}
+
+retroceso.addEventListener("click", retroceder)
