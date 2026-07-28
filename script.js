@@ -89,7 +89,6 @@ function chooseOperator(e) {
     operation = operadorPresionado;
     previousOperand = currentOperand + " " + operation;
     currentOperand = "";
-    console.log(); 
     updateDisplay();
 }
 
@@ -116,3 +115,22 @@ function calculate(e){
 }
 
 igual.addEventListener("click", calculate); 
+
+
+//boton de liempieza
+
+
+let limpiar = document.querySelector(".clear"); 
+
+function limpiarEspacio(){
+    let cO = document.querySelector(".current-operand");
+    let pO = document.querySelector(".previous-operand");
+
+    cO.innerText = ""; 
+    pO.innerText = ""; 
+    currentOperand = ""; 
+    previousOperand = ""; 
+    operation = null; 
+}
+
+limpiar.addEventListener("click", limpiarEspacio); 
