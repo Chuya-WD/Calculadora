@@ -25,21 +25,24 @@ function operate(operator, a, b) {
         case "-":
             return subtract(Number(a), Number(b));
             break;
-        case "x":
+        case "×":
             return multiply(Number(a), Number(b));
 
             break;
-        case "+":
+        case "÷":
             return divide(Number(a), Number(b));
             break;
     }
 }
 
+//variables 
 let currentOperand = "";
 let previousOperand = "";
 let operation = null;
 let shouldResetScreen = false;
 
+
+//Obtener el primero número ingresado
 let botones = document.querySelectorAll(".btn.number");
 
 function appendNumber(e) {
@@ -53,6 +56,9 @@ function appendNumber(e) {
     updateDisplay();
 }
 
+
+//actualizar la venta de .current-operand (número que se ingresa actualmente) 
+// y .previous-operand (número que se ingresa despues de seleccionar un operador)
 function updateDisplay() {
     let cO = document.querySelector(".current-operand");
     let pO = document.querySelector(".previous-operand");
@@ -66,6 +72,8 @@ botones.forEach((boton) => {
 });
 
 
+
+//seleccionar el operador 
 let operador = document.querySelectorAll(".btn.operator");
 
 function chooseOperator(e) {
@@ -81,6 +89,7 @@ function chooseOperator(e) {
     operation = operadorPresionado;
     previousOperand = currentOperand + " " + operation;
     currentOperand = "";
+    console.log(); 
     updateDisplay();
 }
 
@@ -88,3 +97,22 @@ operador.forEach((operador) => {
     operador.addEventListener("click", chooseOperator);
 
 });
+
+
+//generar la operación correcta
+let igual = document.querySelector(".btn.equals"); 
+
+function calculate(e){
+    if(operation === null || previousOperand === "" || currentOperand === "") return; 
+
+    let arr = previousOperand.split(" "); 
+    let valorPrevio = arr[0]; 
+    
+    currentOperand = String(operate(operation, valorPrevio, currentOperand)); 
+    previousOperand = ""; 
+    operation = ""; 
+
+    updateDisplay(); 
+}
+
+igual.addEventListener("click", calculate); 
