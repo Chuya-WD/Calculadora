@@ -134,3 +134,22 @@ function limpiarEspacio(){
 }
 
 limpiar.addEventListener("click", limpiarEspacio); 
+
+
+//punto decimal
+
+let puntoDecimal = document.querySelector(".punto"); 
+
+function agregarPunto(e){
+    let pD = e.target.dataset.action; 
+
+    if(currentOperand === "" || currentOperand.includes(".")) return; 
+
+    currentOperand += pD; 
+
+    updateDisplay(); 
+}
+
+puntoDecimal.addEventListener("click", agregarPunto); 
+
+
