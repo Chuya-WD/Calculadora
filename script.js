@@ -35,7 +35,7 @@ function operate(operator, a, b) {
     }
 }
 
-let currentOperand = "0";
+let currentOperand = "";
 let previousOperand = "";
 let operation = null;
 let shouldResetScreen = false;
@@ -50,14 +50,41 @@ function appendNumber(e) {
     } else {
         currentOperand += numeroPresionado;
     }
-    updateDisplay();  
+    updateDisplay();
 }
 
-function updateDisplay(){
-    let cO = document.querySelector(".current-operand"); 
-    cO.innerText = currentOperand; 
+function updateDisplay() {
+    let cO = document.querySelector(".current-operand");
+    let pO = document.querySelector(".previous-operand");
+
+    cO.innerText = currentOperand;
+    pO.innerText = previousOperand; 
 }
 
 botones.forEach((boton) => {
     boton.addEventListener("click", appendNumber);
+});
+
+
+let operador = document.querySelectorAll(".btn.operator");
+
+function chooseOperator(e) {
+    let operadorPresionado = e.target.dataset.operator;
+
+    if (currentOperand === "")
+        return;
+
+    if (currentOperand !== "" && previousOperand !== "" ) {
+        calculate();
+    }
+
+    operation = operadorPresionado;
+    previousOperand = currentOperand + " " + operation;
+    currentOperand = "";
+    updateDisplay();
+}
+
+operador.forEach((operador) => {
+    operador.addEventListener("click", chooseOperator);
+
 });
