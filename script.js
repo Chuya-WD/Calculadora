@@ -46,7 +46,7 @@ let shouldResetScreen = false;
 let botones = document.querySelectorAll(".btn.number");
 
 function appendNumber(e) {
-    let numeroPresionado = e.target.dataset.number;
+    let numeroPresionado = (typeof e === "object") ? e.target.dataset.number : e;
 
     if (currentOperand === "0") {
         currentOperand = numeroPresionado;
@@ -64,7 +64,7 @@ function updateDisplay() {
     let pO = document.querySelector(".previous-operand");
 
     cO.innerText = currentOperand;
-    pO.innerText = previousOperand; 
+    pO.innerText = previousOperand;
 }
 
 botones.forEach((boton) => {
@@ -82,7 +82,7 @@ function chooseOperator(e) {
     if (currentOperand === "")
         return;
 
-    if (currentOperand !== "" && previousOperand !== "" ) {
+    if (currentOperand !== "" && previousOperand !== "") {
         calculate();
     }
 
@@ -99,67 +99,113 @@ operador.forEach((operador) => {
 
 
 //generar la operación correcta
-let igual = document.querySelector(".btn.equals"); 
+let igual = document.querySelector(".btn.equals");
 
-function calculate(e){
-    if(operation === null || previousOperand === "" || currentOperand === "") return; 
+function calculate(e) {
+    if (operation === null || previousOperand === "" || currentOperand === "") return;
 
-    let arr = previousOperand.split(" "); 
-    let valorPrevio = arr[0]; 
-    
-    currentOperand = String(operate(operation, valorPrevio, currentOperand)); 
-    previousOperand = ""; 
-    operation = ""; 
+    let arr = previousOperand.split(" ");
+    let valorPrevio = arr[0];
 
-    updateDisplay(); 
+    currentOperand = String(operate(operation, valorPrevio, currentOperand));
+    previousOperand = "";
+    operation = "";
+
+    updateDisplay();
 }
 
-igual.addEventListener("click", calculate); 
+igual.addEventListener("click", calculate);
 
 
 //boton de liempieza
 
 
-let limpiar = document.querySelector(".clear"); 
+let limpiar = document.querySelector(".clear");
 
-function limpiarEspacio(){
+function limpiarEspacio() {
     let cO = document.querySelector(".current-operand");
     let pO = document.querySelector(".previous-operand");
 
-    cO.innerText = ""; 
-    pO.innerText = ""; 
-    currentOperand = ""; 
-    previousOperand = ""; 
-    operation = null; 
+    cO.innerText = "";
+    pO.innerText = "";
+    currentOperand = "";
+    previousOperand = "";
+    operation = null;
 }
 
-limpiar.addEventListener("click", limpiarEspacio); 
+limpiar.addEventListener("click", limpiarEspacio);
 
 
 //punto decimal
 
-let puntoDecimal = document.querySelector(".punto"); 
+let puntoDecimal = document.querySelector(".punto");
 
-function agregarPunto(e){
-    let pD = e.target.dataset.action; 
+function agregarPunto(e) {
+    let pD = e.target.dataset.action;
 
-    if(currentOperand === "" || currentOperand.includes(".")) return; 
+    if (currentOperand === "" || currentOperand.includes(".")) return;
 
-    currentOperand += pD; 
+    currentOperand += pD;
 
-    updateDisplay(); 
+    updateDisplay();
 }
 
-puntoDecimal.addEventListener("click", agregarPunto); 
+puntoDecimal.addEventListener("click", agregarPunto);
 
 
 //boton de retroceso
 
-let retroceso = document.querySelector(".retroceso"); 
+let retroceso = document.querySelector(".retroceso");
 
-function retroceder(e){
-    currentOperand = currentOperand.slice(0, -1); 
-    updateDisplay(); 
+function retroceder(e) {
+    currentOperand = currentOperand.slice(0, -1);
+    updateDisplay();
 }
 
 retroceso.addEventListener("click", retroceder)
+
+// soporte de teclado
+
+function teclado(e) {
+    if (e.key >= "0" && e.key <= "9") {
+        appendNumber(e.key);
+    }
+    // 2. Si es un operador
+    if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+        // Mapeamos el '*' del teclado a 'x' si tu switch de la calculadora usa 'x'
+        let op = e.key;
+        if (op === "*") op = "x";
+
+        // Creamos un objeto similar al que espera tu chooseOperator o llamamos tu lógica directamente
+        operation = op;
+        if (currentOperand !== "" && previousOperand !== "") {
+            calculate();
+        }
+        previousOperand = currentOperand + " " + operation;
+        currentOperand = "";
+        updateDisplay();
+    }
+
+    // 3. Si es Enter o el signo igual
+    if (e.key === "Enter" || e.key === "=") {
+        e.preventDefault(); // Evita que la tecla Enter vuelva a presionar el último botón clickeado
+        calculate();
+    }
+
+    // 4. Si es para borrar
+    if (e.key === "Backspace") {
+        retroceder(); // Tu función para borrar el último dígito
+    }
+
+    // 5. Si es para limpiar todo (Escape)
+    if (e.key === "Escape") {
+        limpiarEspacio(); // Tu función para reiniciar la calculadora
+    }
+
+    // 6. Si es el punto decimal
+    if (e.key === ".") {
+        agregarPunto(); // Tu función para agregar decimales
+    }
+}
+
+document.addEventListener("keydown", teclado);
